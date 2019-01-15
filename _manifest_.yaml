@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
         - name: webhook
-          image: pipo02mix/grumpy:1.0.0
+          image: quay.io/giantswarm/grumpy:1.0.0
           imagePullPolicy: Always
           args:
             - -alsologtostderr
@@ -65,7 +65,7 @@ kind: ValidatingWebhookConfiguration
 metadata:
   name: grumpy
 webhooks:
-  - name: grumpy.pipo02mix.org
+  - name: grumpy.giantswarm.io
     clientConfig:
       service:
         name: grumpy
