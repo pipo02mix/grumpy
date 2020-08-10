@@ -48,10 +48,7 @@ func (gs *GrumpyServerHandler) serve(w http.ResponseWriter, r *http.Request) {
 		glog.Error("error deserializing pod")
 		return
 	}
-	if pod.Name == "smooth-app" {
-		return
-	}
-
+	
 	arResponse := v1beta1.AdmissionReview{
 		Response: &v1beta1.AdmissionResponse{
 			Allowed: false,
@@ -60,6 +57,16 @@ func (gs *GrumpyServerHandler) serve(w http.ResponseWriter, r *http.Request) {
 			},
 		},
 	}
+	
+	if pod.Name == "smooth-app" {
+		fmt.Printf("the pod %s is up to the name standard", pod.Name)
+		arResponse.Response.Allowed = true	
+	}
+
+	arResponse.APIVersion = "admission.k8s.io/v1"
+	arResponse.Kind = arRequest.Kind
+	arResponse.Response.UID = arRequest.Request.UID
+	
 	resp, err := json.Marshal(arResponse)
 	if err != nil {
 		glog.Errorf("Can't encode response: %v", err)
